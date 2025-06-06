@@ -28,6 +28,16 @@ const ContactBook = () => {
     setContactList(updatedList);
   };
 
+  const handleDelete = (index: number) => {
+  const updatedList = contactList.filter((_, i) => i !== index);
+  setContactList(updatedList);
+
+  if (editIndex === index) {
+    setEditIndex(null);
+  }
+};
+
+
   return (
     <>
       <div>
@@ -66,6 +76,17 @@ const ContactBook = () => {
                     setEditContact({ ...editContact, city: e.target.value })
                   }
                 />
+
+                <button
+                  onClick={() => {
+                    handleDelete(index);
+                  }}
+                >
+                  Delete
+                </button>
+
+                <button onClick={() => setEditIndex(null)}>Cancel</button>
+
                 <button
                   onClick={() => {
                     handleEdit(index, editContact);
@@ -74,7 +95,6 @@ const ContactBook = () => {
                 >
                   Save
                 </button>
-                <button onClick={() => setEditIndex(null)}>Cancel</button>
               </>
             ) : (
               <>
