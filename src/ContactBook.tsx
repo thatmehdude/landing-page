@@ -6,7 +6,11 @@ const ContactBook = () => {
   };
   const [contactList, setContactList] = useState<ContactProps[]>([]);
   const [contact, setContact] = useState<ContactProps>({ name: "", city: "" });
-  
+  const [editIndex, setEditIndex] = useState<number | null>(null);
+  const [editContact, setEditContact] = useState<ContactProps>({
+    name: "",
+    city: "",
+  });
 
   const handleAddContact = () => {
     if (contact.name.trim() !== "" && contact.city.trim() !== "") {
@@ -23,7 +27,6 @@ const ContactBook = () => {
     );
     setContactList(updatedList);
   };
-
 
   return (
     <>
@@ -47,9 +50,46 @@ const ContactBook = () => {
         <button onClick={handleAddContact}>Add contact</button>
         {contactList.map((contact, index) => (
           <div key={index}>
-            <h3>{contact.name}</h3>
-            <p>{contact.city}</p>
-            <button>Edit</button>
+            {editIndex === index ? (
+              <>
+                <input
+                  type="text"
+                  value={editContact.name}
+                  onChange={(e) =>
+                    setEditContact({ ...editContact, name: e.target.value })
+                  }
+                />
+                <input
+                  type="text"
+                  value={editContact.city}
+                  onChange={(e) =>
+                    setEditContact({ ...editContact, city: e.target.value })
+                  }
+                />
+                <button
+                  onClick={() => {
+                    handleEdit(index, editContact);
+                    setEditIndex(null);
+                  }}
+                >
+                  Save
+                </button>
+                <button onClick={() => setEditIndex(null)}>Cancel</button>
+              </>
+            ) : (
+              <>
+                <h3>{contact.name}</h3>
+                <p>{contact.city}</p>
+                <button
+                  onClick={() => {
+                    setEditIndex(index);
+                    setEditContact(contact);
+                  }}
+                >
+                  Edit
+                </button>
+              </>
+            )}
           </div>
         ))}
       </div>
