@@ -1,48 +1,58 @@
 import { useState } from "react";
+
 const ContactBook = () => {
   type ContactProps = {
+    id: string;
     name: string;
     city: string;
   };
+
   const [contactList, setContactList] = useState<ContactProps[]>([]);
-  const [contact, setContact] = useState<ContactProps>({ name: "", city: "" });
-  const [editIndex, setEditIndex] = useState<number | null>(null);
+  const [contact, setContact] = useState<Omit<ContactProps, "id">>({
+    name: "",
+    city: "",
+  });
   const [editContact, setEditContact] = useState<ContactProps>({
+    id: "",
     name: "",
     city: "",
   });
 
   const handleAddContact = () => {
     if (contact.name.trim() !== "" && contact.city.trim() !== "") {
-      const newContacts = [...contactList, contact];
-      setContactList(newContacts);
-      console.log(contactList);
+      const newContact: ContactProps = {
+        id: crypto.randomUUID(),
+        name: contact.name,
+        city: contact.city,
+      };
+      setContactList([...contactList, newContact]);
       setContact({ name: "", city: "" });
     }
   };
 
-  const handleEdit = (index: number, updatedContact: ContactProps) => {
-    const updatedList = contactList.map((contact, i) =>
-      i === index ? updatedContact : contact
+  const handleEdit = (id: string, updatedContact: ContactProps) => {
+    const updatedList = contactList.map((item) =>
+      item.id === id ? updatedContact : item
     );
     setContactList(updatedList);
+    setEditContact({ id: "", name: "", city: "" });
   };
 
-  const handleDelete = (index: number) => {
-  const updatedList = contactList.filter((_, i) => i !== index);
-  setContactList(updatedList);
+  const handleDelete = (id: string) => {
+    const updatedList = contactList.filter((item) => item.id !== id);
+    setContactList(updatedList);
 
-  if (editIndex === index) {
-    setEditIndex(null);
-  }
-};
-
+    if (editContact.id === id) {
+      setEditContact({ id: "", name: "", city: "" });
+    }
+  };
 
   return (
     <>
       <div>
         <h1>Contact Book</h1>
         <p>Keep track of where your friends live</p>
+
         <span>Name:</span>
         <input
           type="text"
@@ -50,17 +60,20 @@ const ContactBook = () => {
           value={contact.name}
           onChange={(e) => setContact({ ...contact, name: e.target.value })}
         />
-        <span>City</span>
+
+        <span>City:</span>
         <input
           type="text"
           placeholder="city"
           value={contact.city}
           onChange={(e) => setContact({ ...contact, city: e.target.value })}
         />
+
         <button onClick={handleAddContact}>Add contact</button>
-        {contactList.map((contact, index) => (
-          <div key={index}>
-            {editIndex === index ? (
+
+        {contactList.map((c) => (
+          <div key={c.id}>
+            {editContact.id === c.id ? (
               <>
                 <input
                   type="text"
@@ -76,38 +89,22 @@ const ContactBook = () => {
                     setEditContact({ ...editContact, city: e.target.value })
                   }
                 />
+                <button onClick={() => handleDelete(c.id)}>Delete</button>
 
                 <button
-                  onClick={() => {
-                    handleDelete(index);
-                  }}
+                  onClick={() => setEditContact({ id: "", name: "", city: "" })}
                 >
-                  Delete
+                  Cancel
                 </button>
-
-                <button onClick={() => setEditIndex(null)}>Cancel</button>
-
-                <button
-                  onClick={() => {
-                    handleEdit(index, editContact);
-                    setEditIndex(null);
-                  }}
-                >
+                <button onClick={() => handleEdit(c.id, editContact)}>
                   Save
                 </button>
               </>
             ) : (
               <>
-                <h3>{contact.name}</h3>
-                <p>{contact.city}</p>
-                <button
-                  onClick={() => {
-                    setEditIndex(index);
-                    setEditContact(contact);
-                  }}
-                >
-                  Edit
-                </button>
+                <h3>{c.name}</h3>
+                <p>{c.city}</p>
+                <button onClick={() => setEditContact(c)}>Edit</button>
               </>
             )}
           </div>
