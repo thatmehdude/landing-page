@@ -54,22 +54,29 @@ const ContactBook = () => {
         <p>Keep track of where your friends live</p>
 
         <div className="add-contact-div">
-          <div className="add-name-input">
-            <span>Name:</span>
-            <input
-              type="text"
-              value={contact.name}
-              onChange={(e) => setContact({ ...contact, name: e.target.value })}
-            />
+          <div className="add-name-input-div">
+            <label>
+              Name:
+              <input className="add-name-input"
+                type="text"
+                value={contact.name}
+                onChange={(e) =>
+                  setContact({ ...contact, name: e.target.value })
+                }
+              />
+            </label>
           </div>
-
-          <div className="add-city-input">
-            <span>City:</span>
-            <input
-              type="text"
-              value={contact.city}
-              onChange={(e) => setContact({ ...contact, city: e.target.value })}
-            />
+          <div className="add-city-input-div">
+            <label>
+              City:
+              <input className="add-city-input"
+                type="text"
+                value={contact.city}
+                onChange={(e) =>
+                  setContact({ ...contact, city: e.target.value })
+                }
+              />
+            </label>
           </div>
           <button onClick={handleAddContact}>Add contact</button>
         </div>
@@ -86,7 +93,10 @@ const ContactBook = () => {
                         type="text"
                         value={editContact.name}
                         onChange={(e) =>
-                          setEditContact({ ...editContact, name: e.target.value })
+                          setEditContact({
+                            ...editContact,
+                            name: e.target.value,
+                          })
                         }
                       />
                     </div>
@@ -96,17 +106,33 @@ const ContactBook = () => {
                         type="text"
                         value={editContact.city}
                         onChange={(e) =>
-                          setEditContact({ ...editContact, city: e.target.value })
+                          setEditContact({
+                            ...editContact,
+                            city: e.target.value,
+                          })
                         }
                       />
                     </div>
                   </div>
                   <div className="edit-buttons">
-                    <button className="delete-btn" onClick={() => handleDelete(contact.id)}>Delete</button>
-                    <button className="cancel-btn" onClick={() => setEditContact({ id: "", name: "", city: "" })}>
+                    <button
+                      className="delete-btn"
+                      onClick={() => handleDelete(contact.id)}
+                    >
+                      Delete
+                    </button>
+                    <button
+                      className="cancel-btn"
+                      onClick={() =>
+                        setEditContact({ id: "", name: "", city: "" })
+                      }
+                    >
                       Cancel
                     </button>
-                    <button className="save-btn" onClick={() => handleEdit(contact.id, editContact)}>
+                    <button
+                      className="save-btn"
+                      onClick={() => handleEdit(contact.id, editContact)}
+                    >
                       Save
                     </button>
                   </div>
@@ -117,7 +143,12 @@ const ContactBook = () => {
                     <h3>{contact.name}</h3>
                     <p>{contact.city}</p>
                   </div>
-                  <button className="edit-btn" onClick={() => setEditContact(contact)}>Edit</button>
+                  <button
+                    className="edit-btn"
+                    onClick={() => setEditContact(contact)}
+                  >
+                    Edit
+                  </button>
                 </div>
               )}
             </div>

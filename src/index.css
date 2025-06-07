@@ -13,7 +13,7 @@ body {
 
 .contact-container {
   margin: 40px;
-  max-width: 1200px;
+  /* max-width: 1200px; */
 }
 
 .contact-container h1 {
@@ -24,7 +24,7 @@ body {
 }
 
 .contact-container > p {
-  color: #6b7280;
+  color: #1f2937;
   font-size: 1rem;
   margin-bottom: 40px;
 }
@@ -37,34 +37,29 @@ body {
   background-color: white;
   padding: 24px;
   border-radius: 8px;
-  align-items: end;
+  align-items: center;
+  justify-content: flex-start;
+  width: 65%;
 }
 
-.add-name-input,
-.add-city-input {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  flex: 1;
-}
-
-.add-name-input span,
-.add-city-input span {
-  font-size: 14px;
-  color: #374151;
+.add-name-input-div, .add-city-input-div {
+  border: 1px solid rgb(129, 122, 122);
+  padding-left: 8px;
+  border-radius: 4px;
 }
 
 .add-contact-div input {
   padding: 12px 16px;
   border: 1px solid #d1d5db;
-  border-radius: 4px;
+  border-right: none;
   font-size: 16px;
   background-color: white;
+  margin-left: 4px;
+  width: 75%;
 }
 
 .add-contact-div input:focus {
   outline: none;
-  border-color: #3b82f6;
 }
 
 .add-contact-div button {
@@ -86,7 +81,7 @@ body {
 
 .contacts-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 24px;
 }
 
