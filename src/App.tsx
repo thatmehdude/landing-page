@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom"
 import HomePage from "./HomePage"
 import ContactBook from "./ContactBook"
+import GitHubRepoSearch from "./GithubRepo"
 
 function App() {
   
@@ -10,6 +11,7 @@ function App() {
     <Routes>
       <Route path="/" element={<HomePage />}/>
       <Route path="/contact-book" element={<ContactBook />}/>
+      <Route path="/github-repo" element={<GitHubRepoSearch />}/>
     </Routes>
     </BrowserRouter>
     </>

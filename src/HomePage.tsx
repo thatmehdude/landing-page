@@ -9,7 +9,7 @@ const HomePage = () => {
             <ul>
                 <Link to="/contact-book">Contact book</Link>
                 {" "}
-                <Link to="/github-search">Github search</Link>
+                <Link to="/github-repo">Github search</Link>
             </ul>
         </div>
         </>
