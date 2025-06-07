@@ -3,7 +3,7 @@ import { Link } from "react-router-dom"
 const HomePage = () => {
     return (
         <>
-        <div>
+        <div className="homepage-container">
             <h3>Welcome to the homepage</h3>
             <p>Here are links to the project pages</p>
             <ul>

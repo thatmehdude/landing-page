@@ -49,66 +49,80 @@ const ContactBook = () => {
 
   return (
     <>
-      <div>
+      <div className="contact-container">
         <h1>Contact Book</h1>
         <p>Keep track of where your friends live</p>
 
-        <span>Name:</span>
-        <input
-          type="text"
-          placeholder="name"
-          value={contact.name}
-          onChange={(e) => setContact({ ...contact, name: e.target.value })}
-        />
-
-        <span>City:</span>
-        <input
-          type="text"
-          placeholder="city"
-          value={contact.city}
-          onChange={(e) => setContact({ ...contact, city: e.target.value })}
-        />
-
-        <button onClick={handleAddContact}>Add contact</button>
-
-        {contactList.map((c) => (
-          <div key={c.id}>
-            {editContact.id === c.id ? (
-              <>
-                <input
-                  type="text"
-                  value={editContact.name}
-                  onChange={(e) =>
-                    setEditContact({ ...editContact, name: e.target.value })
-                  }
-                />
-                <input
-                  type="text"
-                  value={editContact.city}
-                  onChange={(e) =>
-                    setEditContact({ ...editContact, city: e.target.value })
-                  }
-                />
-                <button onClick={() => handleDelete(c.id)}>Delete</button>
-
-                <button
-                  onClick={() => setEditContact({ id: "", name: "", city: "" })}
-                >
-                  Cancel
-                </button>
-                <button onClick={() => handleEdit(c.id, editContact)}>
-                  Save
-                </button>
-              </>
-            ) : (
-              <>
-                <h3>{c.name}</h3>
-                <p>{c.city}</p>
-                <button onClick={() => setEditContact(c)}>Edit</button>
-              </>
-            )}
+        <div className="add-contact-div">
+          <div className="add-name-input">
+            <span>Name:</span>
+            <input
+              type="text"
+              value={contact.name}
+              onChange={(e) => setContact({ ...contact, name: e.target.value })}
+            />
           </div>
-        ))}
+
+          <div className="add-city-input">
+            <span>City:</span>
+            <input
+              type="text"
+              value={contact.city}
+              onChange={(e) => setContact({ ...contact, city: e.target.value })}
+            />
+          </div>
+          <button onClick={handleAddContact}>Add contact</button>
+        </div>
+
+        <div className="contacts-grid">
+          {contactList.map((contact) => (
+            <div key={contact.id} className="contact-card">
+              {editContact.id === contact.id ? (
+                <div className="edit-mode">
+                  <div className="edit-inputs">
+                    <div className="edit-input-group">
+                      <span>Name:</span>
+                      <input
+                        type="text"
+                        value={editContact.name}
+                        onChange={(e) =>
+                          setEditContact({ ...editContact, name: e.target.value })
+                        }
+                      />
+                    </div>
+                    <div className="edit-input-group">
+                      <span>City:</span>
+                      <input
+                        type="text"
+                        value={editContact.city}
+                        onChange={(e) =>
+                          setEditContact({ ...editContact, city: e.target.value })
+                        }
+                      />
+                    </div>
+                  </div>
+                  <div className="edit-buttons">
+                    <button className="delete-btn" onClick={() => handleDelete(contact.id)}>Delete</button>
+                    <button className="cancel-btn" onClick={() => setEditContact({ id: "", name: "", city: "" })}>
+                      Cancel
+                    </button>
+                    <button className="save-btn" onClick={() => handleEdit(contact.id, editContact)}>
+                      Save
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div className="view-mode">
+                  <div className="contact-info">
+                    <h3>{contact.name}</h3>
+                    <p>{contact.city}</p>
+                  </div>
+                  <button className="edit-btn" onClick={() => setEditContact(contact)}>Edit</button>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
       </div>
     </>
   );
