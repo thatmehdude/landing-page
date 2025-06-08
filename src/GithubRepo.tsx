@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import "./GitHubRepo.css"
+import Dropdown from "./components/Dropdown";
 
 type Repository = {
   id: number;
@@ -23,7 +25,7 @@ const GitHubRepoSearch = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [perPage, setPerPage] = useState(10);
+  const [perPage, setPerPage] = useState("10");
   const [sortBy, setSortBy] = useState("best-match");
   const [order, setOrder] = useState<"asc" | "desc">("desc");
 
@@ -60,7 +62,7 @@ const GitHubRepoSearch = () => {
     }
   };
 
-  const handleSearch = (e?: React.KeyboardEvent | React.MouseEvent) => {
+  const handleSearch = (e: React.KeyboardEvent | React.MouseEvent) => {
     if (e && "key" in e && e.key !== "Enter") return;
     setCurrentPage(1);
     searchRepositories(1);
@@ -70,144 +72,117 @@ const GitHubRepoSearch = () => {
     searchRepositories(newPage);
   };
 
-  const totalPages = Math.ceil(totalCount / perPage);
+  const totalPages = Math.ceil(totalCount / Number(perPage));
 
   return (
-    <div>
+    <div className="container">
       <h1>GitHub Repository Search</h1>
-      <form onSubmit={()=>handleSearch}>
-        <div>
+
+      <form onSubmit={(e) => e.preventDefault()}>
+        <div className="search-bar">
           <input
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search repositories..."
-            style={{ width: "300px", padding: "8px" }}
             onKeyDown={(e) => e.key === "Enter" && handleSearch(e)}
           />
-          <button onClick={handleSearch} disabled={loading}>
-            {loading ? "Searching..." : "Search"}
-          </button>
         </div>
 
-        <div style={{ marginTop: "10px" }}>
-          <span>
-            Items per page:
-            <select
-              value={perPage}
-              onChange={(e) => setPerPage(Number(e.target.value))}
-            >
-              <option value={10}>10</option>
-              <option value={20}>20</option>
-              <option value={50}>50</option>
-            </select>
-          </span>
+        <div className="controls">
+          <Dropdown
+            label="Items per page"
+            value={perPage}
+            onChange={setPerPage}
+            options={[
+              { value: "10", label: "10" },
+              { value: "20", label: "20" },
+              { value: "50", label: "50" },
+            ]}
+          />
 
-          <span style={{ marginLeft: "20px" }}>
-            Sort by:
-            <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
-              <option value="best-match">Best match</option>
-              <option value="stars">Stars</option>
-              <option value="updated">Most recently updated</option>
-            </select>
-          </span>
+          <Dropdown
+            label="Sort by"
+            value={sortBy}
+            onChange={setSortBy}
+            options={[
+              { value: "best-match", label: "Sort by Best match" },
+              { value: "stars", label: "Stars" },
+              { value: "updated", label: "Recently updated" },
+            ]}
+          />
 
           {sortBy !== "best-match" && (
-            <span style={{ marginLeft: "20px" }}>
-              Order:
-              <select
-                value={order}
-                onChange={(e) => setOrder(e.target.value as "asc" | "desc")}
-              >
-                <option value="desc">Descending</option>
-                <option value="asc">Ascending</option>
-              </select>
-            </span>
+            <Dropdown
+              label="Order"
+              value={order}
+              onChange={(value) => setOrder(value as "asc" | "desc")}
+              options={[
+                { value: "desc", label: "Descending" },
+                { value: "asc", label: "Ascending" },
+              ]}
+            />
           )}
         </div>
       </form>
 
-      {error && <div style={{ color: "red", marginTop: "10px" }}>{error}</div>}
+      {error && <div className="error">{error}</div>}
 
       {results.length > 0 && (
-        <div style={{ marginTop: "20px" }}>
+        <div className="repo-list">
           <p>Found {totalCount.toLocaleString()} repositories</p>
-
-          <div>
-            {results.map((repo) => (
-              <div
-                key={repo.id}
-                style={{
-                  marginBottom: "20px",
-                  border: "1px solid #ccc",
-                  padding: "10px",
-                }}
-              >
-                <h3>
-                  <a
-                    href={repo.html_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {repo.full_name}
-                  </a>
-                </h3>
-                <p>{repo.description || "No description available"}</p>
-                <div>
-                  <span>⭐ {repo.stargazers_count.toLocaleString()} stars</span>
-                  {repo.language && (
-                    <span style={{ marginLeft: "20px" }}>
-                      Language: {repo.language}
-                    </span>
-                  )}
-                  <span style={{ marginLeft: "20px" }}>
-                    Updated: {new Date(repo.updated_at).toLocaleDateString()}
-                  </span>
-                </div>
+          {results.map((repo) => (
+            <div key={repo.id} className="repo-card">
+              <h3>
+                <a
+                  href={repo.html_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {repo.full_name}
+                </a>
+              </h3>
+              <p>{repo.description || "No description available"}</p>
+              <div className="repo-meta">
+                <span>⭐ {repo.stargazers_count.toLocaleString()} stars</span>
+                {repo.language && <span> | Language: {repo.language}</span>}
+                <span>
+                  {" "}
+                  | Updated: {new Date(repo.updated_at).toLocaleDateString()}
+                </span>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
 
           {totalPages > 1 && (
-            <div style={{ marginTop: "20px" }}>
+            <div className="pagination">
               <button
                 onClick={() => handlePageChange(currentPage - 1)}
                 disabled={currentPage === 1}
               >
                 Previous
               </button>
-
-              <span style={{ margin: "0 10px" }}>
+              <span>
                 Page {currentPage} of {totalPages}
               </span>
-
               <button
                 onClick={() => handlePageChange(currentPage + 1)}
                 disabled={currentPage === totalPages}
               >
                 Next
               </button>
-
-              {totalPages <= 10 && (
-                <div style={{ marginTop: "10px" }}>
-                  {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                    (page) => (
-                      <button
-                        key={page}
-                        onClick={() => handlePageChange(page)}
-                        style={{
-                          margin: "0 2px",
-                          backgroundColor:
-                            page === currentPage ? "#007cba" : "white",
-                          color: page === currentPage ? "white" : "black",
-                        }}
-                      >
-                        {page}
-                      </button>
-                    )
-                  )}
-                </div>
-              )}
+              {totalPages <= 10 &&
+                Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                  (page) => (
+                    <button
+                      key={page}
+                      onClick={() => handlePageChange(page)}
+                      className={page === currentPage ? "active" : ""}
+                    >
+                      {page}
+                    </button>
+                  )
+                )}
             </div>
           )}
         </div>

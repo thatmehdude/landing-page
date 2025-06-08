@@ -1,0 +1,100 @@
+.container {
+  max-width: 800px;
+  margin: 2rem auto;
+  font-family: Arial, sans-serif;
+}
+
+h1 {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.search-bar {
+  margin-bottom: 1rem;
+}
+
+.search-bar input {
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 1rem;
+  background-color: #bee7fc;
+  border: 1px solid grey;
+}
+
+/* .search-bar button {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  cursor: pointer;
+} */
+
+.controls {
+    margin-bottom: 1rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 24px;
+}
+
+.repo-list {
+  margin-top: 1rem;
+}
+
+.repo-card {
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  background-color: #fefefe;
+}
+
+.repo-card h3 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.repo-card a {
+  text-decoration: none;
+  color: #007bff;
+}
+
+.repo-card a:hover {
+  text-decoration: underline;
+}
+
+.repo-tags {
+  margin-top: 0.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.repo-tags span {
+  background-color: #e0e0e0;
+  border-radius: 0.25rem;
+  padding: 0.2rem 0.5rem;
+  font-size: 0.85rem;
+}
+
+.repo-meta {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: #444;
+}
+
+/* Pagination */
+.pagination {
+  margin-top: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.pagination button {
+  padding: 0.4rem 0.8rem;
+  cursor: pointer;
+}
+
+.pagination .active {
+  background-color: #007cba;
+  color: white;
+}
