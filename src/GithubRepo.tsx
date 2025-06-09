@@ -64,6 +64,7 @@ const GitHubRepoSearch = () => {
 
   const handleSearch = (e: React.KeyboardEvent | React.MouseEvent) => {
     if (e && "key" in e && e.key !== "Enter") return;
+    console.log(loading);
     setCurrentPage(1);
     searchRepositories(1);
   };
